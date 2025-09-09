@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkCore.Data", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkCore.Domain", "EntityFrameworkCore.Domain\EntityFrameworkCore.Domain.csproj", "{55091FC7-CFB1-49C6-B773-C6D71C26B3CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkCore.Console", "EntityFrameworkCore.Console\EntityFrameworkCore.Console.csproj", "{2DC80285-3615-447A-BCCC-B7275186542D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{55091FC7-CFB1-49C6-B773-C6D71C26B3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55091FC7-CFB1-49C6-B773-C6D71C26B3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55091FC7-CFB1-49C6-B773-C6D71C26B3CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC80285-3615-447A-BCCC-B7275186542D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC80285-3615-447A-BCCC-B7275186542D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC80285-3615-447A-BCCC-B7275186542D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC80285-3615-447A-BCCC-B7275186542D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
