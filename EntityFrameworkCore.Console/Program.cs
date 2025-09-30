@@ -6,29 +6,86 @@ using Microsoft.EntityFrameworkCore;
 using FootballLeagueDbContext context = new FootballLeagueDbContext();
 
 // Select all teams
-GetAllTeams();
+//await GetAllTeams();
 
-// Selecting a single record - First one in the list
-Team? teamOne = await context.Teams.FirstOrDefaultAsync();
+// Select one team
+//await GetOneTeam();
 
-// Selecting a single record - First one in the list that meets a condition
-Team? teamTwo = await context.Teams.FirstOrDefaultAsync(t => t.TeamId == 1);
+// Select all records that meet a condition
+await GetFilteredTeams();
 
-// Selecting a single record - Only one record should be returned
-Team? teamThree = await context.Teams.SingleOrDefaultAsync(t => t.TeamId == 2);
-
-// Selecting based on Id
-Team? teamBasedOnId = await context.Teams.FindAsync(3);
-
-if(teamBasedOnId != null)
-{
-	Console.WriteLine(teamBasedOnId.Name);
-}
-
-void GetAllTeams()
+async Task GetAllTeams()
 {
 	// SELECT * FROM TEAMS
-	List<Team> teams = context.Teams.ToList();
+	List<Team> teams = await context.Teams.ToListAsync();
 
 	teams.ForEach(t => Console.WriteLine(t.Name));
+}
+
+async Task GetOneTeam()
+{
+	// Selecting a single record - First one in the list
+	Team? teamFirst = await context.Teams.FirstAsync();
+
+	if(teamFirst != null)
+	{
+		Console.WriteLine(teamFirst.Name);
+	}
+
+	Team? teamFirstOrDefault = await context.Teams.FirstAsync();
+
+	if(teamFirstOrDefault != null)
+	{
+		Console.WriteLine(teamFirstOrDefault.Name);
+	}
+
+	// Selecting a single record - First one in the list that meets a condition
+	Team? teamFirstWithCondition = await context.Teams.FirstAsync(t => t.TeamId == 1);
+
+	if(teamFirstWithCondition != null)
+	{
+		Console.WriteLine(teamFirstWithCondition.Name);
+	}
+
+	Team? teamFirstOrDefaultWithCondition = await context.Teams.FirstOrDefaultAsync(t => t.TeamId == 1);
+
+	if(teamFirstOrDefaultWithCondition != null)
+	{
+		Console.WriteLine(teamFirstOrDefaultWithCondition.Name);
+	}
+
+	// Selecting a single record - Only one record should be returned
+	Team? teamSingle = await context.Teams.SingleAsync(t => t.TeamId == 2);
+
+	if(teamSingle != null)
+	{
+		Console.WriteLine(teamSingle.Name);
+	}
+
+	Team? teamSingleOrDefault = await context.Teams.SingleOrDefaultAsync(t => t.TeamId == 2);
+
+	if(teamSingleOrDefault != null)
+	{
+		Console.WriteLine(teamSingleOrDefault.Name);
+	}
+
+	// Selecting based on Primary Key Id value
+	Team? teamBasedOnId = await context.Teams.FindAsync(3);
+
+	if(teamBasedOnId != null)
+	{
+		Console.WriteLine(teamBasedOnId.Name);
+	}
+}
+
+async Task GetFilteredTeams()
+{
+	Console.WriteLine("Enter desired team");
+	string desiredTeam = Console.ReadLine();
+
+	List<Team> teamsFiltered = await context.Teams
+		.Where(t => t.Name == desiredTeam)
+		.ToListAsync();
+
+	teamsFiltered.ForEach(t => Console.WriteLine(t.Name));
 }
