@@ -81,11 +81,13 @@ async Task GetOneTeam()
 async Task GetFilteredTeams()
 {
 	Console.WriteLine("Enter desired team");
-	string desiredTeam = Console.ReadLine();
+	string searchTerm = Console.ReadLine();
 
-	List<Team> teamsFiltered = await context.Teams
-		.Where(t => t.Name == desiredTeam)
-		.ToListAsync();
+	List<Team> teamsFiltered = await context.Teams.Where(t => t.Name == searchTerm).ToListAsync();
 
 	teamsFiltered.ForEach(t => Console.WriteLine(t.Name));
+
+	List<Team> partialMatches = await context.Teams.Where(t => t.Name.Contains(searchTerm)).ToListAsync();
+
+	partialMatches.ForEach(t => Console.WriteLine(t.Name));
 }
