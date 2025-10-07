@@ -6,18 +6,32 @@ using Microsoft.EntityFrameworkCore;
 using FootballLeagueDbContext context = new FootballLeagueDbContext();
 
 // Select all teams
-//await GetAllTeams();
+// await GetAllTeams();
+await GetAllTeamsQuerySyntax();
 
 // Select one team
-//await GetOneTeam();
+// await GetOneTeam();
 
 // Select all records that meet a condition
-await GetFilteredTeams();
+// await GetFilteredTeams();
 
 async Task GetAllTeams()
 {
 	// SELECT * FROM TEAMS
 	List<Team> teams = await context.Teams.ToListAsync();
+
+	teams.ForEach(t => Console.WriteLine(t.Name));
+}
+
+async Task GetAllTeamsQuerySyntax()
+{
+	Console.WriteLine("Enter Search Term");
+	string searchTerm = Console.ReadLine();
+
+	List<Team> teams = await (from team in context.Teams
+														where EF.Functions.Like(team.Name, $"%{searchTerm}%")
+														select team)
+														.ToListAsync();
 
 	teams.ForEach(t => Console.WriteLine(t.Name));
 }
