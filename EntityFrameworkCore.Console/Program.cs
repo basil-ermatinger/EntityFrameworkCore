@@ -1,19 +1,47 @@
 ﻿using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
-// First we need instance of context
+// Instance of context
 using FootballLeagueDbContext context = new FootballLeagueDbContext();
 
-// Select all teams
+/// Select all teams
 // await GetAllTeams();
-await GetAllTeamsQuerySyntax();
+// await GetAllTeamsQuerySyntax();
 
-// Select one team
+/// Select one team
 // await GetOneTeam();
 
-// Select all records that meet a condition
+/// Select all records that meet a condition
 // await GetFilteredTeams();
+
+/* 
+ * Aggregate Methods 
+ */
+
+/// Count
+int numberOfTeams = await context.Teams.CountAsync();
+Console.WriteLine($"Number of Teams: {numberOfTeams}");
+
+int numberOfTeamsWithCondition = await context.Teams.CountAsync(t => t.TeamId == 1);
+Console.WriteLine($"Number of Teams with condition: {numberOfTeamsWithCondition}");
+
+/// Max
+int maxTeams = await context.Teams.MaxAsync(t => t.TeamId);
+Console.WriteLine($"Max id of all teams: {maxTeams}");
+
+/// Min
+int minTeams = await context.Teams.MinAsync(t => t.TeamId);
+Console.WriteLine($"Min id of all teams: {minTeams}");
+
+/// Average
+double avgTeams = await context.Teams.AverageAsync(t => t.TeamId);
+Console.WriteLine($"Average of all ids of all teams: {avgTeams}");
+
+/// Sum
+int sumTeams = await context.Teams.SumAsync(t => t.TeamId);
+Console.WriteLine($"Sum of all ids of all teams: {sumTeams}");
 
 async Task GetAllTeams()
 {
