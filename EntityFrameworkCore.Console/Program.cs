@@ -1,7 +1,6 @@
 ﻿using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 // Instance of context
 using FootballLeagueDbContext context = new FootballLeagueDbContext();
@@ -16,32 +15,11 @@ using FootballLeagueDbContext context = new FootballLeagueDbContext();
 /// Select all records that meet a condition
 // await GetFilteredTeams();
 
-/* 
- * Aggregate Methods 
- */
+// AggregateMethods
+// await AggregateMethods();
 
-/// Count
-int numberOfTeams = await context.Teams.CountAsync();
-Console.WriteLine($"Number of Teams: {numberOfTeams}");
-
-int numberOfTeamsWithCondition = await context.Teams.CountAsync(t => t.TeamId == 1);
-Console.WriteLine($"Number of Teams with condition: {numberOfTeamsWithCondition}");
-
-/// Max
-int maxTeams = await context.Teams.MaxAsync(t => t.TeamId);
-Console.WriteLine($"Max id of all teams: {maxTeams}");
-
-/// Min
-int minTeams = await context.Teams.MinAsync(t => t.TeamId);
-Console.WriteLine($"Min id of all teams: {minTeams}");
-
-/// Average
-double avgTeams = await context.Teams.AverageAsync(t => t.TeamId);
-Console.WriteLine($"Average of all ids of all teams: {avgTeams}");
-
-/// Sum
-int sumTeams = await context.Teams.SumAsync(t => t.TeamId);
-Console.WriteLine($"Sum of all ids of all teams: {sumTeams}");
+// Grouping and Aggregating
+await GroupingAndAggregating();
 
 async Task GetAllTeams()
 {
@@ -132,4 +110,49 @@ async Task GetFilteredTeams()
 	List<Team> partialMatches = await context.Teams.Where(t => t.Name.Contains(searchTerm)).ToListAsync();
 
 	partialMatches.ForEach(t => Console.WriteLine(t.Name));
+}
+
+async Task AggregateMethods()
+{
+	/// Count
+	int numberOfTeams = await context.Teams.CountAsync();
+	Console.WriteLine($"Number of Teams: {numberOfTeams}");
+
+	int numberOfTeamsWithCondition = await context.Teams.CountAsync(t => t.TeamId == 1);
+	Console.WriteLine($"Number of Teams with condition: {numberOfTeamsWithCondition}");
+
+	/// Max
+	int maxTeams = await context.Teams.MaxAsync(t => t.TeamId);
+	Console.WriteLine($"Max id of all teams: {maxTeams}");
+
+	/// Min
+	int minTeams = await context.Teams.MinAsync(t => t.TeamId);
+	Console.WriteLine($"Min id of all teams: {minTeams}");
+
+	/// Average
+	double avgTeams = await context.Teams.AverageAsync(t => t.TeamId);
+	Console.WriteLine($"Average of all ids of all teams: {avgTeams}");
+
+	/// Sum
+	int sumTeams = await context.Teams.SumAsync(t => t.TeamId);
+	Console.WriteLine($"Sum of all ids of all teams: {sumTeams}");
+}
+
+async Task GroupingAndAggregating()
+{
+	IQueryable<IGrouping<DateTime, Team>> groupedTeams = context.Teams
+		//.Where(...) // Translates to a WHERE clause
+		.GroupBy(t => t.CreatedDate.Date);
+	//.Where(...) // Translates to a HAVING clause
+
+	await groupedTeams.ForEachAsync(group =>
+	{
+		Console.WriteLine(group.Key);
+		Console.WriteLine(group.Sum(q => q.TeamId));
+
+		foreach(Team? team in group)
+		{
+			Console.WriteLine(team.Name);
+		}
+	});
 }
